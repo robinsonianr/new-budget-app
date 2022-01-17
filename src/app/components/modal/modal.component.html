@@ -1,0 +1,50 @@
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Budget Form</h2>
+    </div>
+    <div class="modal-body">
+      <div class="budget-form" id="budgetform">
+        <form id="addForm" (submit)="submitBudget()">
+          <label for=""> Make a budget</label> <br />
+          <input type="number" name="inputAmount" placeholder={{somePlaceholder}} class="input-amount" id="inputamt"
+            [(ngModel)]="inputAmount" /> <br />
+          <input type="submit" value="Add budget" class="input-submit">
+        </form>
+      </div>
+      <div class="expense-form" id="expense-form">
+        <form id="expForm" (submit)="addExpense()">
+          <div class="">
+            <label for="">Please enter your expense name</label><br />
+            <input type="text" name="expenseName" id="expName" class="exp-name" placeholder="{{expNamePlaceholder}}"
+              [(ngModel)]="expTitle" /> <br />
+          </div>
+          <div class="">
+            <label for="">Please enter expenses amount</label><br />
+            <input type="number" name="expenseNumber" id="expNumber" placeholder="{{expPlaceholder}}" class="exp-number"
+              [(ngModel)]="expAmount" /> <br />
+          </div>
+          <input type="submit" value="Add expense" class="exp-submit">
+        </form>
+        <button onclick="callBudget()" id="bug">
+          Back to add budget ->
+        </button>
+      </div>
+
+      <div class="edit-form" id="editForm">
+        <form action="" id="saveEdit">
+          <div class="">
+            <label for="">Edit your expense</label> <br />
+            <input type="text" id="editExpName" />
+          </div>
+          <div class="">
+            <label for="">Edit expense amount</label> <br />
+            <input type="number" id="editExpNumber" />
+          </div>
+          <button type="submit">Save changes</button>
+        </form>
+      </div>
+    </div>
+  </div>

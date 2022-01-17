@@ -1,0 +1,28 @@
+<div class="expenses">
+  <div class="budget-list" id="budgetlist">
+    <div class="col" id="title">
+      <h4>Expense Title</h4>
+    </div>
+    <div class="col" id="value">
+      <h4>Expense Value</h4>
+    </div>
+    <div class="col" id="edit">
+      <h4> Edit/Delete</h4>
+    </div>
+  </div>
+
+  <div class="expValue" *ngFor="let expense of expenses; let i=index" id="expense-section">
+    <div class="expTitleName" id="name">{{expense.title}}</div>
+    <div class="expValueAmount" id="expvalue">$ {{expense.value}}</div>
+    <div class="edite_delete" id="expedit">
+      <p>
+        <button class="edit"><img src="assets\Images\edit-svgrepo-com.svg" width="15" alt="" /></button>
+        <button class="delete"><img src="assets\Images\trash-svgrepo-com.svg" width="15" alt="" /></button>
+      </p>
+    </div>
+  </div>
+</div>
+<app-modal (update1)="updateEvent($event)" (update2)="EventTwo($event)"></app-modal>
+<div class="toggle">
+  <button id="myBtn" type="button">+</button>
+</div>
