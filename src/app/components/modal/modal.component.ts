@@ -1,4 +1,3 @@
-import { HtmlParser } from '@angular/compiler';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DisplayExpensesComponent } from './../expenses/expenses.component';
 
@@ -12,6 +11,8 @@ export class ModalComponent implements OnInit {
   inputAmount: string = "";
   expAmount: string = "";
   expTitle: string = "";
+  editExpName!:string;
+  editExpNumber!:number;
 
   expNamePlaceholder: string = "";
   somePlaceholder: string = "";
@@ -55,6 +56,8 @@ ngOnInit(): void {
     this.expName = document.getElementById("expName")!
     this.expensesAmount  = document.getElementById("expensesAmount")!
     this.expenseForm  = document.getElementById("expense-form")!
+    this.editExpName = (<HTMLInputElement>document.getElementById("editExpName")).value!
+    this.editExpNumber = parseInt((<HTMLInputElement>document.getElementById("editExpNumber")).value!)
    
   }
 
@@ -153,24 +156,25 @@ ngOnInit(): void {
     }
   }
 
-  delExpenseDetails(){
-
-  }
-
-  editExpenseDetails(){
-
-  }
-
-  getExpenseValue(){
-
-  }
+  
 
   callBudget(){
     this.budgetForm.style.display = "block";
     this.expenseForm.style.display = "none";
   }
 
+  getExpenseValue(){
+    let title = (<HTMLInputElement>document.getElementById('editExpName')).value!
+    let editedNumber = parseInt((<HTMLInputElement>document.getElementById('editExpNumber')).value!)
+    let edited = this.Expenses.expenses.findIndex((obj) => obj.title == title);
+    this.Expenses.expenses[edited].title = title;
+    this.Expenses.expenses[edited].value = editedNumber
+    this.calcExpense();
+  }
+
 }
+
+
 
 
 

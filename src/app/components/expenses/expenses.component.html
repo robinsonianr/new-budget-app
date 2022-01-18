@@ -11,13 +11,13 @@
     </div>
   </div>
 
-  <div class="expValue" *ngFor="let expense of expenses; let i=index" id="expense-section">
+  <div class="expValue" *ngFor="let expense of expenses; let i=index" id="{{i}}"  >
     <div class="expTitleName" id="name">{{expense.title}}</div>
     <div class="expValueAmount" id="expvalue">$ {{expense.value}}</div>
     <div class="edite_delete" id="expedit">
       <p>
-        <button class="edit"><img src="assets\Images\edit-svgrepo-com.svg" width="15" alt="" /></button>
-        <button class="delete"><img src="assets\Images\trash-svgrepo-com.svg" width="15" alt="" /></button>
+        <button class="edit" (click)="editExpenseDetails(expense.title)"><img src="assets\Images\edit-svgrepo-com.svg" width="15" alt=""  /></button>
+        <button class="delete" (click)="delExpenseDetails(expense.title)"><img src="assets\Images\trash-svgrepo-com.svg" width="15" alt="" /></button>
       </p>
     </div>
   </div>

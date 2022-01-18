@@ -75,7 +75,7 @@ body, p {
     
 }
 
-#expense-section {
+.expValue {
     width: 100%;
 	overflow: hidden;
 	text-align: center;
