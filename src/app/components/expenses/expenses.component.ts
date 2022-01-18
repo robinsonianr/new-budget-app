@@ -16,12 +16,27 @@ export class DisplayExpensesComponent implements OnInit {
   message2!: number;
   checked: boolean = true;
 
+  modal!:HTMLElement;
+  btn!:HTMLElement;
+  span!:Element;
+  expNumber!:HTMLElement; 
+  expName!:HTMLElement;
+  expenseForm!:HTMLElement;
+  editForm!:HTMLElement; 
+
   constructor() { }
 
 
 
   ngOnInit(): void {
     this.expenses = [];
+    this.modal = document.getElementById("myModal")!
+    this.btn = document.getElementById("myBtn")!
+    this.span = document.getElementsByClassName("close")[0]!
+    this.expNumber = document.getElementById("expNumber")!
+    this.expName = document.getElementById("expName")!
+    this.expenseForm  = document.getElementById("expense-form")!
+    this.editForm = document.getElementById("editForm")!
   }
 
   updateEvent($event: any) {
@@ -38,6 +53,14 @@ export class DisplayExpensesComponent implements OnInit {
       title: titles,
       value: values
     })
+  }
+
+  btnClick(){
+    this.expName.innerText = "";
+    this.expNumber.innerText = "";
+    this.expenseForm.style.display = "block";
+    this.editForm.style.display = "none";
+    this.modal.style.display = "block";
   }
 
 }

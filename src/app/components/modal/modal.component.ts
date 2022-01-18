@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { HtmlParser } from '@angular/compiler';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DisplayExpensesComponent } from './../expenses/expenses.component';
 
 
@@ -17,6 +18,18 @@ export class ModalComponent implements OnInit {
   expPlaceholder: string = "";
   message!: string;
 
+  
+  budgetForm!:HTMLElement; 
+  budgetAmount!:HTMLElement; 
+  inputAmt!:HTMLElement;
+  balanceAmount!:HTMLElement; 
+  expNumber!:HTMLElement; 
+  expName!:HTMLElement;
+  expensesAmount!:HTMLElement;
+  expenseForm!:HTMLElement;
+  editForm!:HTMLElement; 
+  modal!:HTMLElement;
+
   // Event emitters to update new expense
   @Output() update1 = new EventEmitter<string>();
 
@@ -27,62 +40,81 @@ export class ModalComponent implements OnInit {
 
 
   constructor(private Expenses: DisplayExpensesComponent) {
-
+   
   }
 
-  ngOnInit(): void {
-
+  
+ngOnInit(): void {
+    this.modal = document.getElementById("myModal")!
+    this.budgetForm = document.getElementById("budgetform")!
+    this.editForm = document.getElementById("editForm")!
+    this.budgetAmount = document.getElementById("budgetAmount")!
+    this.inputAmt  = document.getElementById("inputamt")!
+    this.balanceAmount = document.getElementById("balanceAmount")!
+    this.expNumber = document.getElementById("expNumber")!
+    this.expName = document.getElementById("expName")!
+    this.expensesAmount  = document.getElementById("expensesAmount")!
+    this.expenseForm  = document.getElementById("expense-form")!
+   
   }
+
+  
+  spanClick() {
+    this.modal.style.display = "none";
+};
+
+
+  
   // Adds budget and sets initial balance
   submitBudget() {
-    let budgetAmount = document.getElementById("budgetAmount")!
-    let inputAmt = document.getElementById("inputamt")!
-    let balanceAmount = document.getElementById("balanceAmount")!
+    
 
     if (!this.inputAmount) {
-      inputAmt.style.border = "1px solid #b80c09";
+      this.inputAmt.style.border = "1px solid #b80c09";
       this.somePlaceholder = "Input can not be empty";
-      inputAmt.style.color = "#b80c09";
+      this.inputAmt.style.color = "#b80c09";
       setTimeout(() => {
-        inputAmt.style.color = "#495057";
-        inputAmt.style.border = "1px solid gray";
+        this.inputAmt.style.color = "#495057";
+        this.inputAmt.style.border = "1px solid gray";
       }, 3000);
     } else {
-      budgetAmount.innerText = this.inputAmount;
-      balanceAmount.innerText = this.inputAmount;
-      budgetAmount.style.color = "green";
-      balanceAmount.style.color = "green";
+      this.budgetAmount.innerText = this.inputAmount;
+      this.balanceAmount.innerText = this.inputAmount;
+      this.budgetAmount.style.color = "green";
+      this.balanceAmount.style.color = "green";
+      this.expenseForm.style.display = "block";
+      this.budgetForm!.style.display = "none";
+      this.editForm.style.display = "none";
       this.inputAmount = "";
-      this.somePlaceholder = "";
+      // this.somePlaceholder = "";
     }
   }
+
 
   // Adds the expense
   addExpense() {
 
-    let expNumber = document.getElementById("expNumber")!
-    let expName = document.getElementById("expName")!
-
     if (!this.expTitle || !this.expAmount) {
-      expNumber.style.border = "1px solid #b80c09";
+      this.expNumber.style.border = "1px solid #b80c09";
       this.expNamePlaceholder = "Input can not be empty";
-      expNumber.style.color = "#b80c09";
+      this.expNumber.style.color = "#b80c09";
 
-      expName.style.border = "1px solid #b80c09";
+      this.expName.style.border = "1px solid #b80c09";
       this.expPlaceholder = "Input can not be empty";
-      expName.style.color = "#b80c09";
+      this.expName.style.color = "#b80c09";
       setTimeout(() => {
-        expName.style.color = "#495057";
-        expName.style.border = "1px solid gray";
+        this.expName.style.color = "#495057";
+        this.expName.style.border = "1px solid gray";
 
-        expNumber.style.color = "#495057";
-        expNumber.style.border = "1px solid gray";
+        this.expNumber.style.color = "#495057";
+        this.expNumber.style.border = "1px solid gray";
       }, 3000);
 
     } else {
       // emits the expense title and amount to listener to be added to array
       this.update1.emit(this.expTitle);
       this.update2.emit(parseInt(this.expAmount));
+      
       this.expAmount = "";
       this.expTitle = "";
       this.expNamePlaceholder = "";
@@ -95,32 +127,47 @@ export class ModalComponent implements OnInit {
 
   // Calculates the the total expense from all the expenses
   calcExpense() {
-    let expensesAmount = document.getElementById("expensesAmount")!
+    
     let totalExp = 0;
     let i = 0;
 
     for (i = 0; i < this.Expenses.expenses.length; i++) {
       totalExp = this.Expenses.expenses[i].value + totalExp;
     }
-    expensesAmount.innerText = totalExp.toString();
+    this.expensesAmount.innerText = totalExp.toString();
     this.updateBalance();
   }
   // Updates the balance after the expenses have been calulated
   updateBalance() {
-    let balanceAmount = document.getElementById("balanceAmount");
-    let expensesAmount = document.getElementById("expensesAmount")!
-    let budgetAmount = document.getElementById("budgetAmount")!
-    balanceAmount!.innerText = (parseInt(budgetAmount.innerText) - parseInt(expensesAmount.innerText)).toString();
+    
+    this.balanceAmount!.innerText = (parseInt(this.budgetAmount.innerText) - parseInt(this.expensesAmount.innerText)).toString();
 
-    if (parseInt(balanceAmount!.innerText) > 0) {
-      balanceAmount!.style.color = "green";
-      budgetAmount!.style.color = "green";
-      expensesAmount!.style.color = "red";
-      balanceAmount!.style.color = "red";
+    if (parseInt(this.balanceAmount!.innerText) > 0) {
+      this.balanceAmount!.style.color = "green";
+      this.budgetAmount!.style.color = "green";
+      this.expensesAmount!.style.color = "red";
+     
+    }else{
+      this.balanceAmount!.style.color = "red";
+      this.expensesAmount!.style.color = "red";
     }
+  }
 
+  delExpenseDetails(){
 
+  }
 
+  editExpenseDetails(){
+
+  }
+
+  getExpenseValue(){
+
+  }
+
+  callBudget(){
+    this.budgetForm.style.display = "block";
+    this.expenseForm.style.display = "none";
   }
 
 }
