@@ -11,8 +11,7 @@ export class ModalComponent implements OnInit {
   inputAmount: string = "";
   expAmount: string = "";
   expTitle: string = "";
-  editExpName!:string;
-  editExpNumber!:number;
+ 
 
   expNamePlaceholder: string = "";
   somePlaceholder: string = "";
@@ -22,6 +21,7 @@ export class ModalComponent implements OnInit {
   
   budgetForm!:HTMLElement; 
   budgetAmount!:HTMLElement; 
+  budgetBut!:HTMLElement; 
   inputAmt!:HTMLElement;
   balanceAmount!:HTMLElement; 
   expNumber!:HTMLElement; 
@@ -30,6 +30,11 @@ export class ModalComponent implements OnInit {
   expenseForm!:HTMLElement;
   editForm!:HTMLElement; 
   modal!:HTMLElement;
+  innerBudget!:HTMLElement;
+  innerExpense!:HTMLElement;
+  innerBalance!:HTMLElement;
+  editExpName!:HTMLInputElement;
+  editExpNumber!:HTMLInputElement;
 
   // Event emitters to update new expense
   @Output() update1 = new EventEmitter<string>();
@@ -56,12 +61,15 @@ ngOnInit(): void {
     this.expName = document.getElementById("expName")!
     this.expensesAmount  = document.getElementById("expensesAmount")!
     this.expenseForm  = document.getElementById("expense-form")!
-    this.editExpName = (<HTMLInputElement>document.getElementById("editExpName")).value!
-    this.editExpNumber = parseInt((<HTMLInputElement>document.getElementById("editExpNumber")).value!)
-   
+    this.editExpName = <HTMLInputElement>document.getElementById("editExpName")!
+    this.editExpNumber = <HTMLInputElement>document.getElementById("editExpNumber")!
+    this.innerBudget = document.getElementById("budget-Amount")!
+    this.innerExpense = document.getElementById("exp-Amount")!
+    this.innerBalance = document.getElementById("bala-Amount")!
+    this.budgetBut = document.getElementById("budgetBut")!
   }
 
-  
+  //button click to remove all forms
   spanClick() {
     this.modal.style.display = "none";
 };
@@ -69,10 +77,10 @@ ngOnInit(): void {
 
   
   // Adds budget and sets initial balance
-  submitBudget() {
-    
+  submitBudget() { 
 
     if (!this.inputAmount) {
+      
       this.inputAmt.style.border = "1px solid #b80c09";
       this.somePlaceholder = "Input can not be empty";
       this.inputAmt.style.color = "#b80c09";
@@ -82,14 +90,16 @@ ngOnInit(): void {
       }, 3000);
     } else {
       this.budgetAmount.innerText = this.inputAmount;
-      this.balanceAmount.innerText = this.inputAmount;
-      this.budgetAmount.style.color = "green";
-      this.balanceAmount.style.color = "green";
+      this.balanceAmount.innerText = (parseInt(this.inputAmount) - parseInt(this.expensesAmount.innerText)).toString();
+      
+      this.innerBudget.style.color = "green";
+      this.innerBalance.style.color = "green";
       this.expenseForm.style.display = "block";
       this.budgetForm!.style.display = "none";
+      this.budgetBut.style.display = "block";
       this.editForm.style.display = "none";
       this.inputAmount = "";
-      // this.somePlaceholder = "";
+      
     }
   }
 
@@ -114,7 +124,7 @@ ngOnInit(): void {
       }, 3000);
 
     } else {
-      // emits the expense title and amount to listener to be added to array
+      // Emits the expense title and amount to listener to be added to array
       this.update1.emit(this.expTitle);
       this.update2.emit(parseInt(this.expAmount));
       
@@ -143,33 +153,36 @@ ngOnInit(): void {
   // Updates the balance after the expenses have been calulated
   updateBalance() {
     
-    this.balanceAmount!.innerText = (parseInt(this.budgetAmount.innerText) - parseInt(this.expensesAmount.innerText)).toString();
+    this.balanceAmount.innerText = (parseInt(this.budgetAmount.innerText) - parseInt(this.expensesAmount.innerText)).toString();
 
-    if (parseInt(this.balanceAmount!.innerText) > 0) {
-      this.balanceAmount!.style.color = "green";
-      this.budgetAmount!.style.color = "green";
-      this.expensesAmount!.style.color = "red";
+    if (parseInt(this.balanceAmount.innerText) > 0) {
+      this.innerBalance.style.color = "green";
+      this.innerBudget.style.color = "green";
+      this.innerExpense.style.color = "red";
      
     }else{
-      this.balanceAmount!.style.color = "red";
-      this.expensesAmount!.style.color = "red";
+      this.innerBalance.style.color = "red";
+      this.innerExpense.style.color = "red";
     }
   }
 
   
-
+  // Button that calls budget form to submit a new budget
   callBudget(){
     this.budgetForm.style.display = "block";
     this.expenseForm.style.display = "none";
   }
 
+  // Grabs the values of the edited expense from input area and updates them
   getExpenseValue(){
-    let title = (<HTMLInputElement>document.getElementById('editExpName')).value!
-    let editedNumber = parseInt((<HTMLInputElement>document.getElementById('editExpNumber')).value!)
-    let edited = this.Expenses.expenses.findIndex((obj) => obj.title == title);
-    this.Expenses.expenses[edited].title = title;
-    this.Expenses.expenses[edited].value = editedNumber
+    let edited = this.Expenses.expenses.findIndex((obj) => obj.title == this.editExpName.value);
+    this.Expenses.expenses[edited].title = this.editExpName.value
+    this.Expenses.expenses[edited].value = parseInt(this.editExpNumber.value);
     this.calcExpense();
+    this.editExpName.value ="";
+    this.editExpNumber.value = "";
+    
+
   }
 
 }

@@ -29,12 +29,15 @@
             </div>
             <input type="submit" value="Add expense" class="exp-submit">
           </form>
-          <button class="callBack" (click)="callBudget()">
+          <button class="callBack" (click)="callBudget()" style="display: none;" id="budgetBut">
             Back to add budget ->
           </button>
         </div>
+      </div>
+    </div>
+  </div> 
 
-        <div class="edit-form" id="editForm">
+        <div class="edit-form" id="editForm" style="display:none">
           <form action="" id="saveEdit">
             <div class="">
               <label for="">Edit your expense</label> <br />
@@ -47,6 +50,3 @@
             <button type="submit" (click)="getExpenseValue()">Save changes</button>
           </form>
         </div>
-      </div>
-    </div>
-  </div> 

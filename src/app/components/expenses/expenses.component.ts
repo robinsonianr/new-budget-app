@@ -28,8 +28,8 @@ export class DisplayExpensesComponent implements OnInit {
   expensesAmount!:HTMLElement;
   expenseForm!:HTMLElement;
   editForm!:HTMLElement; 
-  editExpName!:string;
-  editExpNumber!:number;
+  editExpName!:HTMLInputElement;
+  editExpNumber!:HTMLInputElement;
 
 
   constructor() { }
@@ -49,48 +49,50 @@ export class DisplayExpensesComponent implements OnInit {
     this.balanceAmount = document.getElementById("balanceAmount")!
     this.budgetAmount = document.getElementById("budgetAmount")!
     this.budgetForm = document.getElementById("budgetform")!
-    this.editExpName = (<HTMLInputElement>document.getElementById("editExpName")).value!
-    this.editExpNumber = parseInt((<HTMLInputElement>document.getElementById("editExpNumber")).value!)
+    this.editExpName = <HTMLInputElement>document.getElementById("editExpName")!
+    this.editExpNumber = <HTMLInputElement>document.getElementById("editExpNumber")!
     
   }
-
+  // Reciver 1 that recives the title of the expense from child component
   updateEvent($event: any) {
     this.message1 = $event;
   }
-
+  // Reciver 2 that recives the value of the expense from child component
   EventTwo($event: any) {
     this.message2 = $event;
     this.addNewExpense(this.message1, this.message2)
   }
 
+  // pushes new expense details to expense array 
   addNewExpense(titles: string, values: number) {
     this.expenses.push({
       title: titles,
       value: values
     })
   }
-
+// Deletes the respective expense
   delExpenseDetails($event: any){
     let index = this.expenses.findIndex((item) => item.title === $event);
     this.expenses.splice(index, 1);
     this.calcExpense();
   }
 
+  // Displays edit form and sets input area to the respective expense's details to be edited 
   editExpenseDetails(title: any){
     this.expenseForm.style.display = "none";
     this.budgetForm.style.display = "none";
     this.editForm.style.display = "block";
     this.expenses.findIndex((item) => {
       if (item.title === title) {
-          this.editExpName = item.title;
-          this.editExpNumber = item.value;
+          this.editExpName.value = item.title;
+          this.editExpNumber.value = item.value.toString();
           this.modal.style.display = "block";
       }
     });
   }
 
   
-
+  // Calculates the expense from all expenses entered in the expense array
   calcExpense() {
     
     let totalExp = 0;
@@ -118,6 +120,7 @@ export class DisplayExpensesComponent implements OnInit {
     }
   }
 
+  // Dislpays both the budget and expense form
   btnClick(){
     this.expName.innerText = "";
     this.expNumber.innerText = "";
